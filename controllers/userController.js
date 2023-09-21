@@ -158,11 +158,31 @@ const register = expressAsyncHandler(async (req, res) => {
     }
   })
 
+  // remove a particular officer from database which is done by admin only
   const deleteOfficer=expressAsyncHandler(async(req,res)=>{
     const id=req.params.id;
     try{
       await userModel.findByIdAndRemove(id);
       res.status(200).json("officer is being deleted");
+    }catch(error){
+      res.status(500).json(error);
+    }
+  })
+
+  // update the designation to empty array
+  const changeDesignation=expressAsyncHandler(async(req,res)=>{
+    const id=req.params.id;
+
+    const {role}=req.user;
+    try{
+      const user=await userModel.findById(id);
+      if(user && role=="admin"){
+        user.designation=[];
+        await user.save();
+
+        res.status(200).json("admin change the designation of the particular officer into empty array");
+      }
+
     }catch(error){
       res.status(500).json(error);
     }
@@ -175,6 +195,7 @@ const register = expressAsyncHandler(async (req, res) => {
     putDesignation,
     allOfficerInAdminDashBoard,
     assignNodelOfficer,
-    deleteOfficer
+    deleteOfficer,
+    changeDesignation
   };
   
