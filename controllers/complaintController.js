@@ -1,7 +1,4 @@
 const expressAsyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const userModel = require("../models/userSchema");
 const complaint=require("../models/complaintSchema");
 
 // create a complaint done bty citizen
@@ -37,7 +34,7 @@ const complaintSeen=expressAsyncHandler(async(req,res)=>{
 })
 
 // add pathToTravel and description of particular complaint done byNodalOfficer
-const createPathToTravel=expressAsyncHandler(async(req,res)=>{
+const addNodeToPath=expressAsyncHandler(async(req,res)=>{
     const complainId=req.params.id;
     const {designation,name,email,role}=req.user;
     const {department,description,post}=req.body;
@@ -51,8 +48,7 @@ const createPathToTravel=expressAsyncHandler(async(req,res)=>{
                 assignedDist:complain.district,
                 assignedPost:post
             })
-
-            complain.descriptionByNodalOfficer=description;
+            // complain.descriptionByNodalOfficer=description;
             await complain.save();
 
             res.status(200).json("path and desciption has been added to complain");
@@ -86,9 +82,10 @@ const addComment=expressAsyncHandler(async(req,res)=>{
 })
 
 //show thw all complain belong to the particular officer/department in the partcular district
-const departmentComplainBoard=expressAsyncHandler(async(req,res)=>{
+const complaintAssignedToOfficer=expressAsyncHandler(async(req,res)=>{
     const {designation,name,email}=req.user;
     try{
+        //TODO: refactor dont use filter
        const complain=await complaint.find({district:designation[1]});
        if(complain){
         const filterComplaint=complain.filter(comp=>{
@@ -109,6 +106,7 @@ const departmentComplainBoard=expressAsyncHandler(async(req,res)=>{
 })
 
 // particular officer update the the status of complaint solved
+// TODO :HOW WE UODATE MARK AS DONE
 const updateStatus=expressAsyncHandler(async(req,res)=>{
     const complainId=req.params.id;
     // see which officer logged in
@@ -136,6 +134,6 @@ const toTravel=expressAsyncHandler(async(req,res)=>{
 module.exports={
     createComplaint,
     complaintSeen,
-    createPathToTravel,
-    addComment,departmentComplainBoard
+    complaintAssignedToOfficer,
+    addComment,addNodeToPath
 }
