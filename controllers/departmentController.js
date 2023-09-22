@@ -21,11 +21,9 @@ const seeAllTheDepartmentDistrictWise=expressAsyncHandler(async(req,res)=>{
     const {district}=req.body;
     const {role}=req.user;
     try{
-        const department=await department.find({district:district})
-        if(department && role=="admin"){
-            res.status(200).json(department);
-        }else{
-            res.status(404).json("you are not admin")
+        const departmentsInDistrict=await department.find({district:district})
+        if(departmentsInDistrict){
+            res.status(200).json(departmentsInDistrict);
         }
     }catch(error){
         res.status(500).json(error);
