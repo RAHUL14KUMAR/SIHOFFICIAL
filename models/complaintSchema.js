@@ -36,7 +36,7 @@ const complaintSchema=new Schema({
     image: {
         type: String,
     },
-    deptToSend:{
+    department:{
         type:String,
     },
     district:{

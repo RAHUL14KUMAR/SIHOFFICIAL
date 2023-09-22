@@ -19,15 +19,14 @@ const createComplaint=expressAsyncHandler(async(req,res)=>{
 // the complaint which is seen by nodal officer
 const complaintSeen=expressAsyncHandler(async(req,res)=>{
     try{
-        const {designation,name,email,role}=req.user;
-        const complain=await complaint.find({district:designation[1],pathToTravel:[]});
+        const {designation,role}=req.user;
+        const complain=await complaint.find({district:designation[1],department:designation[2],pathToTravel:[]});
 
-        if(complain){
+        if(complain && designation[0]=="nodalofficer"){
             res.status(200).json(complain);
         }else{
             res.status(404).json("no compliant found");
         }
-
     }catch(error){
         res.status(500).json(error);
     }
