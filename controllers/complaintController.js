@@ -33,8 +33,8 @@ const getComplaints=expressAsyncHandler(async(req,res)=>{
                 res.status(200).json(complain);
             }else{
                 // match complaint's path nodes design with current users desig
-                const complain=await complaint.find({district:designation[1],department:designation[2],rahul:designation[0]});
-                res.status(200).json(complain);
+                // const complain=await complaint.find({district:designation[1],department:designation[2],rahul:designation[0]});
+                // res.status(200).json(complain);
             }
         }else{
             res.status(404).json("no compliant found");
@@ -144,7 +144,7 @@ const toTravel=expressAsyncHandler(async(req,res)=>{
 
 module.exports={
     createComplaint,
-    pendingComplaint,
+    getComplaints,
     complaintAssignedToOfficer,
     addComment,addNodeToPath
 }

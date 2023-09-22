@@ -1,12 +1,12 @@
 const express = require("express");
 
 const protect = require("../middleware/authMiddleware");
-const { createComplaint, pendingComplaint, addNodeToPath } = require("../controllers/complaintController");
+const { createComplaint, getComplaints, addNodeToPath } = require("../controllers/complaintController");
 
 const router = express.Router();
 
 router.post("/createComplain",protect, createComplaint);
-router.get("/getComplainForNodalOfficer",protect,pendingComplaint);
+router.get("/getComplainForNodalOfficer",protect,getComplaints);
 
 router.put('/addNode',addNodeToPath);
 // router.post("/register", register);
