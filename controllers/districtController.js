@@ -17,23 +17,18 @@ const createDistrict = expressAsyncHandler(async (req, res) => {
   }
 });
 
-const getAllDistrict=expressAsyncHandler(async(req,res)=>{
-    try{
-        const {role}=req.user
-            if(role=="citizen"){
-                const dist=await districtModel.find({})
-            if(dist){
-                res.status(200).json(dist);
-            }
-        }else{
-            res.status(404).json("not found");
-        }
-    }catch(error){
-        res.status(500).json(error);
+const getAllDistrict = expressAsyncHandler(async (req, res) => {
+  try {
+    const dist = await districtModel.find({});
+    if (dist) {
+      res.status(200).json(dist);
     }
-})
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 module.exports = {
   createDistrict,
-  getAllDistrict
+  getAllDistrict,
 };
