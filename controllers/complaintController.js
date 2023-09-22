@@ -2,65 +2,71 @@ const expressAsyncHandler = require("express-async-handler");
 const complaint = require("../models/complaintSchema");
 
 // create a complaint done bty citizen
-const createComplaint = expressAsyncHandler(async (req, res) => {
-  const { email } = req.user;
-  const { description, image, department, district } = req.body;
-  try {
-    const complain = await complaint.create({
-      raisedBy: email,
-      description,
-      image,
-      department,
-      district,
-    });
-    res.status(200).json(complain);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-// the complaint which is seen by nodal officer
-const pendingComplaint = expressAsyncHandler(async (req, res) => {
-  try {
-    const { designation, role } = req.user;
-    const complain = await complaint.find({
-      district: designation[1],
-      department: designation[2],
-      pathToTravel: [],
-    });
-
-    if (complain && designation[0] == "nodalofficer") {
-      res.status(200).json(complain);
-    } else {
-      res.status(404).json("no compliant found");
+const createComplaint=expressAsyncHandler(async(req,res)=>{
+    const {email,role}=req.user
+    const {description,image,department,district}=req.body;
+    try{
+        if( role=="citizen"){
+            const complain=await complaint.create({
+                raisedBy:email,description,image,department,district
+            });
+            res.status(200).json(complain);
+        }else{
+            res.status(404).json("only user can sent the complain");
+        }
+    }catch(error){
+        res.status(500).json(error);
     }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+})
+
+// the complaint which is seen by nodal officer and user also
+const getComplaints=expressAsyncHandler(async(req,res)=>{
+    try{
+        const {designation,role,adharCardNumber}=req.user;
+        if(role === "citizen"){
+            const complain=await complaint.find({raisedBy:adharCardNumber});
+            res.status(200).json(complain);
+        }else if(role === "officer"){
+            if(designation[0]=="nodalofficer"){
+                // match complaint's dept, dist with officers whose dept, dist and design[0]==nodalofficer
+                const complain=await complaint.find({district:designation[1],department:designation[2],pathToTravel:[]});
+                res.status(200).json(complain);
+            }else{
+                // match complaint's path nodes design with current users desig
+                // const complain=await complaint.find({district:designation[1],department:designation[2],rahul:designation[0]});
+                // res.status(200).json(complain);
+            }
+        }else{
+            res.status(404).json("no compliant found");
+        }
+    }catch(error){
+        res.status(500).json(error);
+    }
+})
 
 // add pathToTravel and description of particular complaint done byNodalOfficer
-const addNodeToPath = expressAsyncHandler(async (req, res) => {
-  const complainId = req.params.id;
-  const { designation, name, email, role } = req.user;
-  const { department, description, post } = req.body;
+const addNodeToPath=expressAsyncHandler(async(req,res)=>{
+    const complainId=req.params.id;
+    const {designation,name,email,role}=req.user;
+    const {department,post}=req.body;
 
-  const complain = await complaint.findById(complainId);
+    const complain=await complaint.findById(complainId);
 
-  try {
-    if (designation[0] == "nodalofficer" && complain) {
-      complain.pathToTravel.push({
-        assignedDept: department,
-        assignedDist: complain.district,
-        assignedPost: post,
-      });
-      // complain.descriptionByNodalOfficer=description;
-      await complain.save();
+    try{
+        if(designation[0]=="nodalofficer" && complain){
+            complain.pathToTravel.push({
+                assignedDept:department,
+                assignedDist:complain.district,
+                assignedPost:post
+            })
+            // complain.descriptionByNodalOfficer=description;
+            await complain.save();
 
-      res.status(200).json("path and desciption has been added to complain");
-    } else {
-      res.status(404).json("you are not required to perform opertion");
-    }
+            res.status(200).json("path and desciption has been added to complain");
+        }else{
+            res.status(404).json("you are not required to perform opertion");
+        }
+    
   } catch (error) {
     res.status(500).json(error);
   }
@@ -137,12 +143,13 @@ const updateStatus = expressAsyncHandler(async (req, res) => {
 
 // complain to travel just like the path given or complain seen by hte officers who are in the path to travel.
 
-const toTravel = expressAsyncHandler(async (req, res) => {});
+const toTravel=expressAsyncHandler(async(req,res)=>{
 
-module.exports = {
-  createComplaint,
-  pendingComplaint,
-  complaintAssignedToOfficer,
-  addComment,
-  addNodeToPath,
-};
+})
+
+module.exports={
+    createComplaint,
+    pendingComplaint,
+    complaintAssignedToOfficer,
+    addComment,addNodeToPath
+}
