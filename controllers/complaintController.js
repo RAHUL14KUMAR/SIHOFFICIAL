@@ -3,11 +3,11 @@ const complaint=require("../models/complaintSchema");
 
 // create a complaint done bty citizen
 const createComplaint=expressAsyncHandler(async(req,res)=>{
-    // const {adharCardNumber}=req.user
-    const {raisedBy,description,image,deptToSend,district}=req.body;
+    const {adharCardNumber}=req.user
+    const {description,image,department,district}=req.body;
     try{
         const complain=await complaint.create({
-            raisedBy,description,image,deptToSend,district
+            raisedBy:adharCardNumber,description,image,department,district
         });
 
         res.status(200).json(complain);
@@ -41,7 +41,7 @@ const addNodeToPath=expressAsyncHandler(async(req,res)=>{
     const complain=await complaint.findById(complainId);
 
     try{
-        if(designation[0]=="nodalOfficer" && complain){
+        if(designation[0]=="nodalofficer" && complain){
             complain.pathToTravel.push({
                 assignedDept:department,
                 assignedDist:complain.district,
