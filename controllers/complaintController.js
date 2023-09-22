@@ -43,6 +43,26 @@ const getComplaints=expressAsyncHandler(async(req,res)=>{
         res.status(500).json(error);
     }
 })
+// nodal officer add description
+const addNodalDescription=expressAsyncHandler(async(req,res)=>{
+    const complainId=req.params.id;
+    const {designation}=req.user;
+    const {description}=req.body;
+    try{
+        if(designation[0]=="nodalofficer"){
+            const complain=await complain.findById(complainId);
+            if(complain){
+                complain.descriptionByNodalOfficer=description;
+
+                await complain.save();
+
+                res.status(200).json("nodal officer add the description")
+            }
+        }
+    }catch(error){
+        res.status(500).json(error)
+    }
+})
 
 // add pathToTravel and description of particular complaint done byNodalOfficer
 const addNodeToPath=expressAsyncHandler(async(req,res)=>{
@@ -146,5 +166,6 @@ module.exports={
     createComplaint,
     getComplaints,
     complaintAssignedToOfficer,
-    addComment,addNodeToPath
+    addComment,addNodeToPath,
+    addNodalDescription
 }
