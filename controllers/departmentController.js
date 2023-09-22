@@ -19,7 +19,6 @@ const createDepartment=expressAsyncHandler(async(req,res)=>{
 
 const seeAllTheDepartmentDistrictWise=expressAsyncHandler(async(req,res)=>{
     const {district}=req.body;
-    const {role}=req.user;
     try{
         const departmentsInDistrict=await department.find({district:district})
         if(departmentsInDistrict){

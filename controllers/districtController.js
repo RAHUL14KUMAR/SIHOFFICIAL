@@ -1,5 +1,5 @@
 const expressAsyncHandler = require("express-async-handler");
-const districtModel = require("../models/createDistrict");
+const districtModel = require("../models/districtSchema");
 
 const createDistrict=expressAsyncHandler(async(req,res)=>{
     const {role}=req.user;

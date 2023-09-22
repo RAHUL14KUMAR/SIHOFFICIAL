@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const departmentSchema=new Schema({
+const districtSchema=new Schema({
     district:{
         type:String
     }
 })
 
-module.exports = mongoose.model("departments", departmentSchema);
+module.exports = mongoose.model("districts", districtSchema);
