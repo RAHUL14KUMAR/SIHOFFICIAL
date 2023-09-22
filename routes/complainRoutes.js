@@ -8,6 +8,7 @@ const router = express.Router();
 router.post("/createComplain",protect, createComplaint);
 router.get("/getComplaint",protect,getComplaints);
 
+//TODO: comment and description is not tested
 router.put('/addDescription',addNodalDescription);
 router.put('/addNodeToPath/:id',protect,addNodeToPath);
 

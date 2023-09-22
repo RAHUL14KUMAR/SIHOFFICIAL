@@ -5,7 +5,7 @@ const {
   adminRegisterOfficier,
   putDesignation,
   allOfficerInAdminDashBoard,
-//   deleteOfficer,
+  //   deleteOfficer,
   changeDesignation,
 } = require("../controllers/userController");
 const protect = require("../middleware/authMiddleware");
@@ -19,7 +19,7 @@ router.post("/addOfficer", protect, adminRegisterOfficier);
 router.put("/addDesignation", protect, putDesignation);
 router.put("/changeDesignation/:id", protect, changeDesignation);
 
-router.get("/allOfficer",protect, allOfficerInAdminDashBoard);
+router.get("/allOfficer", protect, allOfficerInAdminDashBoard);
 
 // router.delete("/officer/:id", deleteOfficer);
 
