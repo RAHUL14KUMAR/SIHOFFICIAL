@@ -129,44 +129,26 @@ const register = expressAsyncHandler(async (req, res) => {
   // admin sell all the user whose role is officer
   const allOfficerInAdminDashBoard=expressAsyncHandler(async(req,res)=>{
     try{
-      const user=await userModel.find({role:"officer"});
-      if(user){
-        res.status(200).json(user);
+      const {role}=req.user
+      const officer=await userModel.find({role:"officer"});
+      if(officer && role=="admin"){
+        res.status(200).json(officer);
       }
     }catch(error){
       res.status(500).json(error);
     }
   });
 
-  // admin can assign a node officer
-  const assignNodelOfficer=expressAsyncHandler(async(req,res)=>{
-    try{
-      const id=req.params.id;
-      const{role}=req.user;
-      const user=await userModel.findById(id);
-
-      if(user &&role=="admin"){
-        user.designation[0]="NodalOfficer"
-        await user.save();
-
-        res.status(200).json("admin assign an nodel officer");
-      }
-
-    }catch(error){
-      res.status(500).json(error);
-    }
-  })
-
   // remove a particular officer from database which is done by admin only
-  const deleteOfficer=expressAsyncHandler(async(req,res)=>{
-    const id=req.params.id;
-    try{
-      await userModel.findByIdAndRemove(id);
-      res.status(200).json("officer is being deleted");
-    }catch(error){
-      res.status(500).json(error);
-    }
-  })
+  // const deleteOfficer=expressAsyncHandler(async(req,res)=>{
+  //   const id=req.params.id;
+  //   try{
+  //     await userModel.findByIdAndRemove(id);
+  //     res.status(200).json("officer is being deleted");
+  //   }catch(error){
+  //     res.status(500).json(error);
+  //   }
+  // })
 
   // update the designation to empty array
   const changeDesignation=expressAsyncHandler(async(req,res)=>{
@@ -193,8 +175,7 @@ const register = expressAsyncHandler(async (req, res) => {
     adminRegisterOfficier,
     putDesignation,
     allOfficerInAdminDashBoard,
-    assignNodelOfficer,
-    deleteOfficer,
+    // deleteOfficer,
     changeDesignation
   };
   

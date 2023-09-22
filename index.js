@@ -6,8 +6,9 @@ const errorMiddleware = require("./middleware/errorMiddleware");
 const connection = require("./database/db");
 
 const userRoute = require("./routes/userRoutes");
+const departmentRoute = require("./routes/departmentRoutes");
 
-const port=process.env.PORT;
+const port = process.env.PORT;
 
 const app = express();
 app.use(cors());
@@ -19,11 +20,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRoute);
+app.use("/dept", departmentRoute);
 
 app.use(errorMiddleware);
 
 connection();
 app.listen(port, () => {
-    console.log(`server is running at http://localhost:${port}`);
+  console.log(`server is running at http://localhost:${port}`);
 });
-  

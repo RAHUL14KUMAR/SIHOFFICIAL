@@ -2,7 +2,7 @@ const expressAsyncHandler = require("express-async-handler");
 const department = require("../models/departmentSchema");
 
 const createDepartment=expressAsyncHandler(async(req,res)=>{
-    const {name,email,role}=req.user;
+    const {role}=req.user;
     const {deptName,district}=req.body;
 
     try{
