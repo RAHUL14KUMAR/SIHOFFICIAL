@@ -3,7 +3,7 @@ const complaint=require("../models/complaintSchema");
 
 // create a complaint done bty citizen
 const createComplaint=expressAsyncHandler(async(req,res)=>{
-    const {email,name}=req.user
+    const {email}=req.user
     const {description,image,department,district}=req.body;
     try{
         const complain=await complaint.create({
