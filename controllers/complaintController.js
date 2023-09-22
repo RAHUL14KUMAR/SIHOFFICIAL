@@ -3,11 +3,11 @@ const complaint=require("../models/complaintSchema");
 
 // create a complaint done bty citizen
 const createComplaint=expressAsyncHandler(async(req,res)=>{
-    const {adharCardNumber}=req.user
+    const {email,name}=req.user
     const {description,image,department,district}=req.body;
     try{
         const complain=await complaint.create({
-            raisedBy:adharCardNumber,description,image,department,district
+            raisedBy:email,description,image,department,district
         });
 
         res.status(200).json(complain);
