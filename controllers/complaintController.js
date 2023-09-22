@@ -149,7 +149,7 @@ const toTravel=expressAsyncHandler(async(req,res)=>{
 
 module.exports={
     createComplaint,
-    pendingComplaint,
+    getComplaints,
     complaintAssignedToOfficer,
     addComment,addNodeToPath
 }
