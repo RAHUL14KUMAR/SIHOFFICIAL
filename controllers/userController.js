@@ -113,11 +113,11 @@ const register = expressAsyncHandler(async (req, res) => {
       const officer=await userModel.findOne({email:email});
       if(officer && role=="admin" && officer.designation.length==0){
         officer.designation.push(post,dist,dept)
-        await user.save();
+        await officer.save();
 
-        res.status(200).json("admin add designation to the officer");
+        res.status(200).json("admin added designation to the officer");
       }else{
-        res.status(404).json("officer can only be add admin or designation is already added");
+        res.status(404).json("user is not admin or designation is already added");
       }
 
     }catch(error){
