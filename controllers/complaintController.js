@@ -156,29 +156,59 @@ const addComment = expressAsyncHandler(async (req, res) => {
 
 // particular officer update the the status of complaint solved
 // TODO :HOW WE UODATE MARK AS DONE
-const updateStatus = expressAsyncHandler(async (req, res) => {
+const markAsDone = expressAsyncHandler(async (req, res) => {
   const complainId = req.params.id;
   // see which officer logged in
-  const { designation, name, email } = req.user;
+  const { designation, name, email, role } = req.user;
   try {
     const complain = await complaint.findById(complainId);
-    if (complain) {
-      const isComplain = complain.pathToTravel.find(
-        (compl) => compl.assignedDept === designation[2]
-      );
-
-      if (isComplain) {
-        complain.pathToTravel;
+    if (complain && role == "officer") {
+      complain.pathToTravel = complain.pathToTravel.map((node) => {
+        if (
+          node.assignedDept === designation[2] &&
+          node.assignedDist === designation[1] &&
+          node.assignedPost === designation[0]
+        ) {
+          node.markDone = true;
+        }
+        return node;
+      });
+      let cnt = 0;
+      complain.pathToTravel.forEach((node) => {
+        if (node.markDone === true) {
+          cnt++;
+        }
+      });
+      if (cnt === complain.pathToTravel.length) {
+        complain.status = "PARTIALLY-RESOLVED";
+        //TODO: notify the user that complain is resolved from govt's end
       }
+      await complain.save();
+      res.status(200).json(complain);
     }
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// complain to travel just like the path given or complain seen by hte officers who are in the path to travel.
-
-const toTravel = expressAsyncHandler(async (req, res) => {});
+const userMarkComplaintStatusResolved = expressAsyncHandler(
+  async (req, res) => {
+    const complainId = req.params.id;
+    const { role } = req.user;
+    try {
+      if (role === "citizen") {
+        const complain = await complaint.findById(complainId);
+        if (complain.status === "PARTIALLY-RESOLVED") {
+          complain.status = "RESOLVED";
+        }
+        await complain.save();
+        res.status(200).json(complain);
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
 
 module.exports = {
   createComplaint,
@@ -187,4 +217,6 @@ module.exports = {
   addComment,
   addNodeToPath,
   addNodalDescription,
+  markAsDone,
+  userMarkComplaintStatusResolved,
 };

@@ -1,18 +1,28 @@
 const express = require("express");
 
 const protect = require("../middleware/authMiddleware");
-const { createComplaint, getComplaints, addNodeToPath, addNodalDescription, addComment } = require("../controllers/complaintController");
+const {
+  createComplaint,
+  getComplaints,
+  addNodeToPath,
+  addNodalDescription,
+  addComment,
+  markAsDone,
+  userMarkComplaintStatusResolved,
+} = require("../controllers/complaintController");
 
 const router = express.Router();
 
-router.post("/createComplain",protect, createComplaint);
-router.get("/getComplaint",protect,getComplaints);
+router.post("/createComplain", protect, createComplaint);
+router.get("/getComplaint", protect, getComplaints);
 
 //TODO: comment and description is not tested
-router.put('/addDescription',addNodalDescription);
-router.put('/addNodeToPath/:id',protect,addNodeToPath);
+router.put("/addDescription", addNodalDescription);
+router.put("/addNodeToPath/:id", protect, addNodeToPath);
+router.put("/markAsDone/:id", protect, markAsDone);
+router.put("/userMarkResolved/:id", protect, userMarkComplaintStatusResolved);
 
-router.put('/addComments',addComment);
+router.put("/addComments", addComment);
 // router.post("/register", register);
 // router.post("/addOfficer", protect, adminRegisterOfficier);
 
