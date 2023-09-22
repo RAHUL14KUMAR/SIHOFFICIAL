@@ -174,10 +174,10 @@ const register = expressAsyncHandler(async (req, res) => {
 
     const {role}=req.user;
     try{
-      const user=await userModel.findById(id);
-      if(user && role=="admin"){
-        user.designation=[];
-        await user.save();
+      const officer=await userModel.findById(id);
+      if(officer && role=="admin"){
+        officer.designation=[];
+        await officer.save();
 
         res.status(200).json("admin change the designation of the particular officer into empty array");
       }
