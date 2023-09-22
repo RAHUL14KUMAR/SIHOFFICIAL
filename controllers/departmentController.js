@@ -17,6 +17,19 @@ const createDepartment=expressAsyncHandler(async(req,res)=>{
     }
 })
 
+const seeAllTheDepartmentDistrictWise=expressAsyncHandler(async(req,res)=>{
+    const {district}=req.body;
+    try{
+        const department=await department.find({district:district})
+        if(department){
+            res.status(200).json(department);
+        }
+    }catch(error){
+        res.status(500).json(error);
+    }
+})
+
 module.exports={
-    createDepartment
+    createDepartment,
+    seeAllTheDepartmentDistrictWise
 }
