@@ -7,7 +7,7 @@ const connection = require("./database/db");
 
 const userRoute = require("./routes/userRoutes");
 const departmentRoute = require("./routes/departmentRoutes");
-
+const districtRoutes=require('./routes/districtRoutes')
 const port = process.env.PORT;
 
 const app = express();
@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 
 app.use("/user", userRoute);
 app.use("/dept", departmentRoute);
+app.use("/dist",districtRoutes);
 
 app.use(errorMiddleware);
 

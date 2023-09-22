@@ -1,7 +1,7 @@
 const express = require("express");
 // const { createDepartment } = require("../controllers/departmentController");
 const protect = require("../middleware/authMiddleware");
-const createDistrict = require("../models/createDistrict");
+const {createDistrict} = require("../controllers/districtController");
 
 const router = express.Router();
 
