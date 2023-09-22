@@ -29,7 +29,7 @@ const getComplaints=expressAsyncHandler(async(req,res)=>{
         }else if(role === "officer"){
             if(designation[0]=="nodalofficer"){
                 // match complaint's dept, dist with officers whose dept, dist and design[0]==nodalofficer
-                const complain=await complaint.find({district:designation[1],department:designation[2],pathToTravel:[]});
+                const complain=await complaint.find({district:designation[1],department:designation[2],status:"UN-RESOLVED"});
                 res.status(200).json(complain);
             }else{
                 // match complaint's path nodes design with current users desig
