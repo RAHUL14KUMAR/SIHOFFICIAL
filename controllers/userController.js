@@ -48,7 +48,6 @@ const register = expressAsyncHandler(async (req, res) => {
     const user = await userModel.findOne({
       email,
     });
-    console.log("user designation",user.designation);
     if (user && await bcrypt.compare(password, user.password)) {
       res.json({
         _id: user.id,
