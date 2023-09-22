@@ -5,7 +5,7 @@ const { createComplaint } = require("../controllers/complaintController");
 
 const router = express.Router();
 
-router.post("/createCommplain",protect, createComplaint);
+router.post("/createComplain",protect, createComplaint);
 // router.post("/register", register);
 // router.post("/addOfficer", protect, adminRegisterOfficier);
 
