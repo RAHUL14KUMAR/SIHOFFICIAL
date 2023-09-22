@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/createComplaint",protect, createComplaint);
 router.get("/getComplainForNodalOfficer",protect,getComplaints);
 
-router.put('/addNode',addNodeToPath);
+router.put('/addNodeToPath/:id',protect,addNodeToPath);
 // router.post("/register", register);
 // router.post("/addOfficer", protect, adminRegisterOfficier);
 
