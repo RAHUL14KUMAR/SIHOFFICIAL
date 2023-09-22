@@ -22,9 +22,9 @@ const createComplaint=expressAsyncHandler(async(req,res)=>{
 // the complaint which is seen by nodal officer and user also
 const getComplaints=expressAsyncHandler(async(req,res)=>{
     try{
-        const {designation,role,adharCardNumber}=req.user;
+        const {designation,role,email}=req.user;
         if(role === "citizen"){
-            const complain=await complaint.find({raisedBy:adharCardNumber});
+            const complain=await complaint.find({raisedBy:email});
             res.status(200).json(complain);
         }else if(role === "officer"){
             if(designation[0]=="nodalofficer"){
@@ -68,7 +68,7 @@ const addNodalDescription=expressAsyncHandler(async(req,res)=>{
 const addNodeToPath=expressAsyncHandler(async(req,res)=>{
     const complainId=req.params.id;
     const {designation,name,email,role}=req.user;
-    const {department,post}=req.body;
+    const {department,post,district}=req.body;
 
     const complain=await complaint.findById(complainId);
 
@@ -76,7 +76,7 @@ const addNodeToPath=expressAsyncHandler(async(req,res)=>{
         if(designation[0]=="nodalofficer" && complain){
             complain.pathToTravel.push({
                 assignedDept:department,
-                assignedDist:complain.district,
+                assignedDist:district,
                 assignedPost:post
             })
             // complain.descriptionByNodalOfficer=description;

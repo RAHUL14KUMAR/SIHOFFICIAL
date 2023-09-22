@@ -9,7 +9,7 @@ router.post("/createComplain",protect, createComplaint);
 router.get("/getComplain",protect,getComplaints);
 
 router.put('/addDescription',addNodalDescription);
-router.put('/addNodeToPath',addNodeToPath);
+router.put('/addNodeToPath',protect,addNodeToPath);
 
 router.put('/addComments',addComment);
 // router.post("/register", register);
