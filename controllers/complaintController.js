@@ -3,27 +3,39 @@ const complaint=require("../models/complaintSchema");
 
 // create a complaint done bty citizen
 const createComplaint=expressAsyncHandler(async(req,res)=>{
-    const {email}=req.user
+    const {email,role}=req.user
     const {description,image,department,district}=req.body;
     try{
-        const complain=await complaint.create({
-            raisedBy:email,description,image,department,district
-        });
-
-        res.status(200).json(complain);
+        if( role=="citizen"){
+            const complain=await complaint.create({
+                raisedBy:email,description,image,department,district
+            });
+            res.status(200).json(complain);
+        }else{
+            res.status(404).json("only user can sent the complain");
+        }
     }catch(error){
         res.status(500).json(error);
     }
 })
 
-// the complaint which is seen by nodal officer
-const pendingComplaint=expressAsyncHandler(async(req,res)=>{
+// the complaint which is seen by nodal officer and user also
+const getComplaints=expressAsyncHandler(async(req,res)=>{
     try{
-        const {designation,role}=req.user;
-        const complain=await complaint.find({district:designation[1],department:designation[2],pathToTravel:[]});
-
-        if(complain && designation[0]=="nodalofficer"){
+        const {designation,role,adharCardNumber}=req.user;
+        if(role === "citizen"){
+            const complain=await complaint.find({raisedBy:adharCardNumber});
             res.status(200).json(complain);
+        }else if(role === "officer"){
+            if(designation[0]=="nodalofficer"){
+                // match complaint's dept, dist with officers whose dept, dist and design[0]==nodalofficer
+                const complain=await complaint.find({district:designation[1],department:designation[2],pathToTravel:[]});
+                res.status(200).json(complain);
+            }else{
+                // match complaint's path nodes design with current users desig
+                const complain=await complaint.find({district:designation[1],department:designation[2],rahul:designation[0]});
+                res.status(200).json(complain);
+            }
         }else{
             res.status(404).json("no compliant found");
         }
@@ -36,7 +48,7 @@ const pendingComplaint=expressAsyncHandler(async(req,res)=>{
 const addNodeToPath=expressAsyncHandler(async(req,res)=>{
     const complainId=req.params.id;
     const {designation,name,email,role}=req.user;
-    const {department,description,post}=req.body;
+    const {department,post}=req.body;
 
     const complain=await complaint.findById(complainId);
 
