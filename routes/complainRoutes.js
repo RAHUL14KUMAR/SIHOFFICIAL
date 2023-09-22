@@ -6,10 +6,10 @@ const { createComplaint, getComplaints, addNodeToPath, addNodalDescription, addC
 const router = express.Router();
 
 router.post("/createComplain",protect, createComplaint);
-router.get("/getComplain",protect,getComplaints);
+router.get("/getComplaint",protect,getComplaints);
 
 router.put('/addDescription',addNodalDescription);
-router.put('/addNodeToPath',protect,addNodeToPath);
+router.put('/addNodeToPath/:id',protect,addNodeToPath);
 
 router.put('/addComments',addComment);
 // router.post("/register", register);
