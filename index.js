@@ -9,6 +9,7 @@ const userRoute = require("./routes/userRoutes");
 const departmentRoute = require("./routes/departmentRoutes");
 const districtRoutes=require('./routes/districtRoutes');
 const complainRoutes=require('./routes/complainRoutes');
+const analyticsRoutes=require("./routes/analyticsRoutes");
 
 const port = process.env.PORT;
 
@@ -25,6 +26,9 @@ app.use("/user", userRoute);
 app.use("/dept", departmentRoute);
 app.use("/dist",districtRoutes);
 app.use("/comp",complainRoutes);
+
+app.use("/analytics",analyticsRoutes);
+
 
 app.use(errorMiddleware);
 
