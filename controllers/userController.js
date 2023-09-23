@@ -146,11 +146,11 @@ const allOfficerInAdminDashBoard = expressAsyncHandler(async (req, res) => {
 
 // update the designation to empty array
 const changeDesignation = expressAsyncHandler(async (req, res) => {
-  const id = req.params.id;
+  const { email } = req.body;
 
   const { role } = req.user;
   try {
-    const officer = await userModel.findById(id);
+    const officer = await userModel.findOne({ email: email });
     if (officer && role == "admin") {
       officer.designation = [];
       await officer.save();
@@ -162,6 +162,7 @@ const changeDesignation = expressAsyncHandler(async (req, res) => {
         );
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 });

@@ -17,7 +17,7 @@ router.post("/register", register);
 router.post("/addOfficer", protect, adminRegisterOfficier);
 
 router.put("/addDesignation", protect, putDesignation);
-router.put("/changeDesignation/:id", protect, changeDesignation);
+router.put("/changeDesignation", protect, changeDesignation);
 
 router.get("/allOfficer", protect, allOfficerInAdminDashBoard);
 
