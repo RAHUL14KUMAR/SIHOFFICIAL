@@ -83,6 +83,7 @@ const addNodalDescription = expressAsyncHandler(async (req, res) => {
 // add pathToTravel and description of particular complaint done byNodalOfficer
 const addNodeToPath = expressAsyncHandler(async (req, res) => {
   const complainId = req.params.id;
+  console.log(complainId);
   const { designation, name, email, role } = req.user;
   const { department, post, district } = req.body;
 
